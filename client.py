@@ -10,8 +10,8 @@ def decay_schedule(init_value,min_value,
 
     values = np.logspace(log_start, 0, decay_steps,
                          base = log_base, endpoint =True)
-    values = (values-values.min())
-
+    values = (values-values.min())/(values.max() - values.min())
+    values = values[::-1]
     values = (init_value-min_value)*values +min_value
 
     values = np.pad(values,(0, rem_steps), 'edge')
@@ -29,16 +29,16 @@ def select_action(Q,state, epsilon):
 
 
 #Hyperaments
-gamma=1.0
-init_alpha=0.5
-min_alpha=0.01
-alpha_decay_ratio=0.3
-init_epsilon=1.0
-min_epsilon=0.1
-epsilon_decay_ratio=0.9
-n_episodes=500
-max_steps=30
-state_size = 24*4
+gamma = 0.95                  
+init_alpha = 0.5
+min_alpha = 0.01
+alpha_decay_ratio = 0.5       
+init_epsilon = 1.0
+min_epsilon = 0.1
+epsilon_decay_ratio = 0.8     
+n_episodes = 1000              
+max_steps = 30
+state_size = 24 * 4
 action_size = 3
 
 actions = ["left","right","jump"]
@@ -50,7 +50,8 @@ epsilons = decay_schedule(init_epsilon,min_epsilon,epsilon_decay_ratio,n_episode
 
 for e in range(0, n_episodes):
     state_d = 0
-    for step in range(max_steps):
+    reward_ep = 0
+    while True:
 
         state = env.connect(2037)
 
@@ -59,17 +60,18 @@ for e in range(0, n_episodes):
 
         new_state, reward = env.get_state_reward(state, action_s)
 
-        new_state_d = int(new_state[0:7],2) + 24*int(new_state[7:],2)
-
+        new_state_d = int(new_state,2) 
+    
+        reward_ep += reward
         #Acabou o Episodio 
-        if(new_state_d==0):
-            Q[state_d][action] = Q[state_d][action] + alphas[e]*(reward)
+        if(reward==-100):
+            Q[state_d][action] = Q[state_d][action] + alphas[e] * (reward - Q[state_d][action])
             break
              
         Q[state_d][action] = Q[state_d][action] + alphas[e]*(reward + gamma*(np.max(Q[new_state_d]) - Q[state_d][action]))
 
         state_d = new_state_d
-    
+    print(f"Episode: {e}, Reward: {reward_ep}, Epsilon: {epsilons[e]}, Alpha: {alphas[e]}")
 
 
 
