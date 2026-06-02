@@ -61,12 +61,12 @@ for e in range(0, n_episodes):
         new_state, reward = env.get_state_reward(state, action_s)
 
         new_state_d = int(new_state,2) 
-    
+
         reward_ep += reward
         #Acabou o Episodio 
-        if(reward==-100):
+        if(reward==-100 or reward == 300):
             Q[state_d][action] = Q[state_d][action] + alphas[e] * (reward - Q[state_d][action])
-            break
+            break   
              
         Q[state_d][action] = Q[state_d][action] + alphas[e]*(reward + gamma*(np.max(Q[new_state_d]) - Q[state_d][action]))
 
