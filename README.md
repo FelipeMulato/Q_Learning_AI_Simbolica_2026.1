@@ -18,6 +18,15 @@ O gráfico ilustra a transição do agente de uma fase de pura exploração (rec
 
 ![Curva de Aprendizado Q-Learning](midia/grafico_bonito.png)
 
+### Interpretação da Curva
+* **Episódios 0–3500:** Recompensas muito negativas — agente 
+  explorando aleatoriamente, morrendo com frequência.
+* **Episódios 3500–4500:** Transição — agente começa a encontrar 
+  o bloco final esporadicamente.
+* **Episódios 4500+:** Convergência — média móvel estabiliza 
+  na área positiva, indicando que o agente aprendeu a 
+  política ótima de forma consistente.
+
 ## 📁 Estrutura do Repositório
 
 * `midia/`: Pasta contendo os arquivos visuais e de demonstração:
@@ -64,9 +73,34 @@ Os hiperparâmetros foram ajustados com escalas de decaimento dinâmico ao longo
 * **Taxa de Aprendizado ($\alpha$):** Inicia de forma agressiva em `0.5` e decai gradualmente para `0.01` ao longo da primeira metade do treinamento, permitindo uma estabilização fina da Tabela Q nas rotas finais.
 * **Resiliência e Checkpoints:** O script `client.py` possui um sistema inteligente de leitura e escrita. O progresso é salvo a cada 10 episódios. Caso o processo seja interrompido, ao rodar novamente, ele carrega o histórico e a matriz `resultado.txt`, continuando o treinamento exatamente de onde parou.
 
+## 💾 Sistema de Checkpoint
+O treinamento é salvo automaticamente a cada 10 episódios 
+em `resultado.txt` e `recompensas.txt`. Para retomar de 
+onde parou, basta rodar `python3 client.py` novamente — 
+o script detecta os arquivos e continua do episódio correto.
+
+Para iniciar um treinamento do zero:
+rm resultado.txt recompensas.txt
+
+
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-Certifique-se de ter o Python instalado e as seguintes bibliotecas:
-```bash
 pip install numpy matplotlib
+
+### Passo a passo
+1. Baixe o ambiente Unity 
+2. Dê permissão de execução ao binário:
+chmod +x 'Aprendizagem por Reforco.x86_64'
+
+3. Em dois terminais separados:
+
+**Terminal 1 — Ambiente:(exemplo com linux)**
+cd linux/
+./'Aprendizagem por Reforco.x86_64'
+
+**Terminal 2 — Agente (treino):**
+python3 client.py
+
+**Para rodar a política ótima (sem treino):**
+python3 run.py
