@@ -4,17 +4,29 @@ Este repositório contém a implementação de um agente de Aprendizado por Refo
 
 ## 📊 Resultados do Treinamento
 
-Abaixo está a curva de aprendizado do agente (Média Móvel de 100 episódios). O gráfico ilustra a transição do agente de uma fase de pura exploração (recompensas negativas devido a quedas frequentes) para a fase de exploração otimizada (recompensas máximas consistentes ao encontrar o bloco final).
+Abaixo você pode conferir o vídeo demonstrando o comportamento do agente após aprender a melhor política de navegação, além da curva de aprendizado do treinamento.
 
-![Curva de Aprendizado Q-Learning](grafico_bonito.png)
+### Melhor Política Aprendida
+<div align="center">
+  <video src="midia/Aprendizagem%20por%20reforço.mp4" controls="controls" width="80%"></video>
+  
+  *(Caso o vídeo não carregue, [clique aqui para assistir](midia/Aprendizagem%20por%20reforço.mp4))*
+</div>
+
+### Curva de Aprendizado
+O gráfico ilustra a transição do agente de uma fase de pura exploração (recompensas negativas devido a quedas frequentes) para a fase de exploração otimizada (recompensas máximas consistentes ao encontrar o bloco final), plotando a Média Móvel de 100 episódios.
+
+![Curva de Aprendizado Q-Learning](midia/grafico_bonito.png)
 
 ## 📁 Estrutura do Repositório
 
+* `midia/`: Pasta contendo os arquivos visuais e de demonstração:
+  * `Aprendizagem por reforço.mp4`: Vídeo demonstrando a melhor política do agente.
+  * `grafico_bonito.png`: Gráfico da curva de aprendizado.
 * `client.py`: Arquivo principal contendo a lógica do agente, hiperparâmetros, loop de treinamento, política epsilon-greedy e sistema de salvamento automático (*checkpoints*).
 * `connection.py`: Módulo auxiliar responsável pela comunicação via *socket* (porta 2037) com o servidor local do jogo.
 * `resultado.txt`: A Tabela Q (Q-Table) final gerada após o treinamento, contendo as expectativas de recompensa para os 96 estados possíveis e 3 ações.
 * `recompensas.txt`: Histórico numérico bruto contendo o somatório das recompensas obtidas pelo agente ao longo de cada episódio.
-* `grafico_bonito.png`: Gráfico gerado a partir do histórico de recompensas, aplicando uma Média Móvel para melhor visualização da curva de aprendizado do agente.
 
 ## ⚙️ Como Funciona o Ambiente
 
@@ -50,7 +62,7 @@ Os hiperparâmetros foram ajustados com escalas de decaimento dinâmico ao longo
 * **Fator de Desconto ($\gamma$):** Fixo em `0.95`. Prioriza levemente o planejamento de curto/médio prazo para garantir que o agente foque em chegar ao fim do nível rapidamente.
 * **Taxa de Exploração ($\epsilon$):** Inicia em `1.0` (100% de ações aleatórias - focado em explorar o mapa) e decai para `0.1` ao longo de 80% do treinamento. Com o tempo, a estratégia Epsilon-Greedy passa a escolher as melhores ações conhecidas na Tabela Q em 90% das vezes (*Exploitation*).
 * **Taxa de Aprendizado ($\alpha$):** Inicia de forma agressiva em `0.5` e decai gradualmente para `0.01` ao longo da primeira metade do treinamento, permitindo uma estabilização fina da Tabela Q nas rotas finais.
-* **Resiliência e Checkpoints:** O script `client.py` possui um sistema inteligente de leitura e escrita. O progresso é salvo a cada 10 episódios. Caso o processo seja interrompido, ao rodar novamente, ele carrega o histórico e a matriz `resultado.txt`, continuando o treinamento exatamente de onde p
+* **Resiliência e Checkpoints:** O script `client.py` possui um sistema inteligente de leitura e escrita. O progresso é salvo a cada 10 episódios. Caso o processo seja interrompido, ao rodar novamente, ele carrega o histórico e a matriz `resultado.txt`, continuando o treinamento exatamente de onde parou.
 
 ## 🚀 Como Executar
 
