@@ -7,11 +7,11 @@ Este repositório contém a implementação de um agente de Aprendizado por Refo
 Abaixo você pode conferir o vídeo demonstrando o comportamento do agente após aprender a melhor política de navegação, além da curva de aprendizado do treinamento.
 
 ### Melhor Política Aprendida
-<div align="center">
-  <video src="midia/Aprendizagem%20por%20reforço.mp4" controls="controls" width="80%"></video>
-  
-  *(Caso o vídeo não carregue, [clique aqui para assistir](midia/Aprendizagem%20por%20reforço.mp4))*
-</div>
+
+
+https://github.com/user-attachments/assets/d1b41681-6fbe-4cbf-aa21-0b2d5145296f
+
+
 
 ### Curva de Aprendizado
 O gráfico ilustra a transição do agente de uma fase de pura exploração (recompensas negativas devido a quedas frequentes) para a fase de exploração otimizada (recompensas máximas consistentes ao encontrar o bloco final), plotando a Média Móvel de 100 episódios.
