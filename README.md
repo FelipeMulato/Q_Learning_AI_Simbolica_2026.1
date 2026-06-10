@@ -66,6 +66,11 @@ $$Q(s, a) \leftarrow Q(s, a) + \alpha \left[ R + \gamma \max_{a'} Q(s', a') - Q(
 ### Política Epsilon-Greedy ($\epsilon$-Greedy)
 Para garantir que o agente não fique preso em rotas subótimas desde o início, aplicamos a estratégia de seleção de ações **Epsilon-Greedy**, que equilibra dinamicamente a Exploração (*Exploration*) e o Aproveitamento (*Exploitation*).
 
+### 📉 Cronograma de Decaimento Logarítmico (`decay_schedule`)
+Para otimizar a convergência e evitar mudanças abruptas, tanto a **Taxa de Exploração ($\epsilon$)** quanto a **Taxa de Aprendizado ($\alpha$)** utilizam a mesma função customizada de decaimento logarítmico baseado em `np.logspace`. 
+
+Esta função gera uma curva matemática que decresce mais rapidamente nos episódios iniciais e vai suavizando conforme se aproxima do fim do seu ciclo. Ao atingir o limite estipulado pela proporção de passos (`decay_ratio`), o valor é congelado (*padding* por borda) para garantir que o agente passe o restante do treino refinando o conhecimento de forma estável.
+
 Os hiperparâmetros foram ajustados com escalas de decaimento dinâmico ao longo dos episódios:
 
 * **Fator de Desconto ($\gamma$):** Fixo em `0.95`. Prioriza levemente o planejamento de curto/médio prazo para garantir que o agente foque em chegar ao fim do nível rapidamente.
